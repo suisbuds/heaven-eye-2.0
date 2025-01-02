@@ -54,8 +54,20 @@ class YoloPredictor(BasePredictor, QObject):
 
         # 解析配置文件
         self.args = get_cfg(cfg, overrides)
-        # 设置模型保存目录
-        self.save_dir = get_save_dir(self.args)
+
+        # 获取项目根路径
+        root_dir = Path.cwd()
+
+        # 将保存路径设置在当前根目录下的 runs 文件夹中
+        project = (
+            self.args.project or root_dir / "runs"
+        )  # BUG: 根目录路径是通过SEETINGS逻辑动态生成的
+
+        name = f"{self.args.mode}"
+        self.save_dir = increment_path(
+            Path(project) / name, exist_ok=self.args.exist_ok
+        )
+        print(f"Save directory: {self.save_dir}")
         # 初始化一个标志，标记模型是否已经完成预热（warmup）
         self.done_warmup = False
         # 检查是否要显示图像
@@ -100,13 +112,12 @@ class YoloPredictor(BasePredictor, QObject):
     # main for detect
     @smart_inference_mode()
     def run(self, *args, **kwargs):
-        print(str(self.save_txt) + "sssssssssss")
-        print(str(self.save_txt_cam) + "sssssssssss")
         try:
             if self.args.verbose:
                 LOGGER.info("")
-            # Setup model
-            self.yolo2main_status_msg.emit("模型载入中...")
+
+            # set model
+            self.yolo2main_status_msg.emit("Loding Model")
             if not self.model:
                 self.setup_model(self.new_model_name)
                 self.used_model_name = self.new_model_name
@@ -161,7 +172,7 @@ class YoloPredictor(BasePredictor, QObject):
                     if self.stop_dtc:
                         if isinstance(self.vid_writer[-1], cv2.VideoWriter):
                             self.vid_writer[-1].release()  # 释放最后的视讯写入器
-                        self.yolo2main_status_msg.emit("检测终止")
+                        self.yolo2main_status_msg.emit("Detection terminated")
                         break
 
                     # 在中途更改模型
@@ -173,7 +184,7 @@ class YoloPredictor(BasePredictor, QObject):
                     # 暂停开关
                     if self.continue_dtc:
                         # time.sleep(0.001)
-                        self.yolo2main_status_msg.emit("检测中...")
+                        self.yolo2main_status_msg.emit("Detecting")
                         # batch = next(self.dataset)  # 获取下一个数据
 
                         self.batch = batch
@@ -290,7 +301,7 @@ class YoloPredictor(BasePredictor, QObject):
                     if not self.source_type.webcam and count + 1 >= all_count:
                         if isinstance(self.vid_writer[-1], cv2.VideoWriter):
                             self.vid_writer[-1].release()  # 释放最后的视频写入器
-                        self.yolo2main_status_msg.emit("检测完成")
+                        self.yolo2main_status_msg.emit("Detection completed")
                         break
 
         except Exception as e:
@@ -817,7 +828,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )  # 按文件大小排序
         self.model_box_cam.clear()
         self.model_box_cam.addItems(self.pt_list_cam)
-        self.show_status("目前页面：image or video检测页面，Mode：Classify")
+        self.show_status("Mode: classify")
 
     def button_detect(self):  # 触发button_detect后的事件
         self.task = "Detect"
@@ -865,7 +876,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )  # 按文件大小排序
         self.model_box_cam.clear()
         self.model_box_cam.addItems(self.pt_list_cam)
-        self.show_status("目前页面：image or video检测页面，Mode：Detect")
+        self.show_status("Mode: detect")
 
     def button_pose(self):  # 触发button_detect后的事件
         self.task = "Pose"
@@ -913,7 +924,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )  # 按文件大小排序
         self.model_box_cam.clear()
         self.model_box_cam.addItems(self.pt_list_cam)
-        self.show_status("目前页面：image or video检测页面，Mode：Pose")
+        self.show_status("Mode: pose")
 
     def button_segment(self):  # 触发button_detect后的事件
         self.task = "Segment"
@@ -961,7 +972,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )  # 按文件大小排序
         self.model_box_cam.clear()
         self.model_box_cam.addItems(self.pt_list_cam)
-        self.show_status("目前页面：image or video检测页面，Mode：Segment")
+        self.show_status("Mode: segment")
 
     def button_track(self):  # 触发button_detect后的事件
         self.task = "Track"
@@ -1009,21 +1020,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )  # 按文件大小排序
         self.model_box_cam.clear()
         self.model_box_cam.addItems(self.pt_list_cam)
-        self.show_status("目前页面：image or video检测页面，Mode：Track")
+        self.show_status("Mode: track")
 
     ####################################image or video####################################
     # 选择本地档案
     def open_src_file(self):
         if self.task == "Classify":
-            self.show_status("目前页面：image or video检测页面，Mode：Classify")
+            self.show_status("Mode: classify")
         if self.task == "Detect":
-            self.show_status("目前页面：image or video检测页面，Mode：Detect")
+            self.show_status("Mode: detect")
         if self.task == "Pose":
-            self.show_status("目前页面：image or video检测页面，Mode：Pose")
+            self.show_status("Mode: pose")
         if self.task == "Segment":
-            self.show_status("目前页面：image or video检测页面，Mode：Segment")
+            self.show_status("Mode: segment")
         if self.task == "Track":
-            self.show_status("目前页面：image or video检测页面，Mode：Track")
+            self.show_status("Mode: track")
 
         # 结束cam线程，节省资源
         if self.yolo_thread_cam.isRunning():
@@ -1075,7 +1086,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.yolo_predict.source = name
 
                 # 显示档案载入状态
-                self.show_status("载入档案：{}".format(os.path.basename(name)))
+                self.show_status("Load source: {}".format(os.path.basename(name)))
 
                 # 更新配置档中的上次打开的资料夹路径
                 config["open_fold"] = os.path.dirname(name)
@@ -1134,7 +1145,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def run_or_continue(self):
         # 检查 YOLO 预测的来源是否为空
         if self.yolo_predict.source == "":
-            self.show_status("开始侦测前请选择图片或影片来源...")
+            self.show_status("Please open a video source")
             self.run_button.setChecked(False)
         else:
             # 设置 YOLO 预测的停止标志为 False
@@ -1145,7 +1156,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.run_button.setChecked(True)  # 启动按钮
                 self.save_txt_button.setEnabled(False)  # 启动检测后禁止勾选保存
                 self.save_res_button.setEnabled(False)
-                self.show_status("检测中...")
+                self.show_status("Detecting")
                 self.yolo_predict.continue_dtc = True  # 控制 YOLO 是否暂停
                 if not self.yolo_thread.isRunning():
                     self.yolo_thread.start()
@@ -1154,7 +1165,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # 如果开始按钮未被勾选，表示暂停检测
             else:
                 self.yolo_predict.continue_dtc = False
-                self.show_status("检测暂停...")
+                self.show_status("Pause")
                 self.run_button.setChecked(False)  # 停止按钮
 
     # 显示底部状态栏信息
@@ -1178,7 +1189,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if self.yolo_thread.isRunning():
                 self.yolo_thread.quit()  # 结束处理
 
-        elif msg == "Detection terminated!" or msg == "检测终止":
+        elif msg == "Detection terminated" or msg == "检测终止":
             # 启用保存结果和保存文本的按钮
             self.save_res_button.setEnabled(True)
             self.save_txt_button.setEnabled(True)
@@ -1204,13 +1215,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def is_save_res(self):
         if self.save_res_button.checkState() == Qt.CheckState.Unchecked:
             # 显示消息，提示运行图片结果不会保存
-            self.show_status("NOTE: Run image results are not saved.")
+            self.show_status("Image results won't be saved")
 
             # 将 YOLO 实例的保存结果的标志设置为 False
             self.yolo_predict.save_res = False
         elif self.save_res_button.checkState() == Qt.CheckState.Checked:
             # 显示消息，提示运行图片结果将会保存
-            self.show_status("NOTE: Run image results will be saved.")
+            self.show_status("Image results will be saved")
 
             # 将 YOLO 实例的保存结果的标志设置为 True
             self.yolo_predict.save_res = True
@@ -1219,13 +1230,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def is_save_txt(self):
         if self.save_txt_button.checkState() == Qt.CheckState.Unchecked:
             # 显示消息，提示标签结果不会保存
-            self.show_status("NOTE: Labels results are not saved.")
+            self.show_status("Labels results won't be saved")
 
             # 将 YOLO 实例的保存标签的标志设置为 False
             self.yolo_predict.save_txt = False
         elif self.save_txt_button.checkState() == Qt.CheckState.Checked:
             # 显示消息，提示标签结果将会保存
-            self.show_status("NOTE: Labels results will be saved.")
+            self.show_status("Labels results will be saved")
 
             # 将 YOLO 实例的保存标签的标志设置为 True
             self.yolo_predict.save_txt = True
@@ -1274,7 +1285,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # 如果是 iou_slider 的值发生变化，则改变 iou_spinbox 的值
             self.iou_spinbox.setValue(x / 100)
             # 显示消息，提示 IOU 阈值变化
-            self.show_status("IOU Threshold: %s" % str(x / 100))
+            self.show_status("IoU threshold: %s" % str(x / 100))
             # 设置 YOLO 实例的 IOU 阈值
             self.yolo_predict.iou_thres = x / 100
 
@@ -1286,7 +1297,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # 如果是 conf_slider 的值发生变化，则改变 conf_spinbox 的值
             self.conf_spinbox.setValue(x / 100)
             # 显示消息，提示 Confidence 阈值变化
-            self.show_status("Conf Threshold: %s" % str(x / 100))
+            self.show_status("Confidence threshold: %s" % str(x / 100))
             # 设置 YOLO 实例的 Confidence 阈值
             self.yolo_predict.conf_thres = x / 100
 
@@ -1321,7 +1332,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         elif self.task == "Track":
             self.yolo_predict.new_model_name = "./models/track/%s" % self.select_model
         # 显示消息，提示模型已更改
-        self.show_status("Change Model：%s" % self.select_model)
+        self.show_status("Change Model: %s" % self.select_model)
 
         # 在界面上显示新的模型名称
         self.Model_name.setText(self.select_model)
@@ -1331,7 +1342,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     ####################################camera####################################
     def cam_button(self):
         self.yolo_predict_cam.source = 0
-        self.show_status("目前页面：Webcam检测页面")
+        self.show_status("webcam detection")
         # 结束image or video线程，节省资源
         if self.yolo_thread.isRunning():
             self.yolo_thread.quit()  # 结束线程
@@ -1350,7 +1361,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     # cam控制开始/暂停检测
     def cam_run_or_continue(self):
         if self.yolo_predict_cam.source == "":
-            self.show_status("并未检测到摄影机")
+            self.show_status("Don't have camera source")
             self.run_button_cam.setChecked(False)
 
         else:
@@ -1362,7 +1373,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.run_button_cam.setChecked(True)  # 启动按钮
                 self.save_txt_button_cam.setEnabled(False)  # 启动检测后禁止勾选保存
                 self.save_res_button_cam.setEnabled(False)
-                self.cam_show_status("检测中...")
+                self.cam_show_status("Detecting")
                 self.yolo_predict_cam.continue_dtc = True  # 控制 YOLO 是否暂停
 
                 if not self.yolo_thread_cam.isRunning():
@@ -1372,7 +1383,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # 如果开始按钮未被勾选，表示暂停检测
             else:
                 self.yolo_predict_cam.continue_dtc = False
-                self.cam_show_status("检测暂停...")
+                self.cam_show_status("Pause")
                 self.run_button_cam.setChecked(False)  # 停止按钮
 
     # cam主视窗显示原始图片和检测结果
@@ -1429,7 +1440,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # 如果是 iou_slider 的值发生变化，则改变 iou_spinbox 的值
             self.iou_spinbox_cam.setValue(c / 100)
             # 显示消息，提示 IOU 阈值变化
-            self.cam_show_status("IOU Threshold: %s" % str(c / 100))
+            self.cam_show_status("IoU threshold: %s" % str(c / 100))
             # 设置 YOLO 实例的 IOU 阈值
             self.yolo_predict_cam.iou_thres = c / 100
 
@@ -1441,7 +1452,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # 如果是 conf_slider 的值发生变化，则改变 conf_spinbox 的值
             self.conf_spinbox_cam.setValue(c / 100)
             # 显示消息，提示 Confidence 阈值变化
-            self.cam_show_status("Conf Threshold: %s" % str(c / 100))
+            self.cam_show_status("Confidence threshold: %s" % str(c / 100))
             # 设置 YOLO 实例的 Confidence 阈值
             self.yolo_predict_cam.conf_thres = c / 100
 
@@ -1484,7 +1495,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 "./models/track/%s" % self.select_model_cam
             )
         # 显示消息，提示模型已更改
-        self.cam_show_status("Change Model：%s" % self.select_model_cam)
+        self.cam_show_status("Change Model: %s" % self.select_model_cam)
 
         # 在界面上显示新的模型名称
         self.Model_name_cam.setText(self.select_model_cam)
@@ -1536,13 +1547,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def cam_is_save_res(self):
         if self.save_res_button_cam.checkState() == Qt.CheckState.Unchecked:
             # 显示消息，提示运行图片结果不会保存
-            self.show_status("NOTE：运行图片结果不会保存")
+            self.show_status("Image results won't be saved")
 
             # 将 YOLO 实例的保存结果的标志设置为 False
             self.yolo_thread_cam.save_res = False
         elif self.save_res_button_cam.checkState() == Qt.CheckState.Checked:
             # 显示消息，提示运行图片结果将会保存
-            self.show_status("NOTE：运行图片结果将会保存")
+            self.show_status("Image results will be saved")
 
             # 将 YOLO 实例的保存结果的标志设置为 True
             self.yolo_thread_cam.save_res = True
@@ -1551,13 +1562,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def cam_is_save_txt(self):
         if self.save_txt_button_cam.checkState() == Qt.CheckState.Unchecked:
             # 显示消息，提示标签结果不会保存
-            self.show_status("NOTE：Label结果不会保存")
+            self.show_status("Labels results won't be saved")
 
             # 将 YOLO 实例的保存标签的标志设置为 False
             self.yolo_thread_cam.save_txt_cam = False
         elif self.save_txt_button_cam.checkState() == Qt.CheckState.Checked:
             # 显示消息，提示标签结果将会保存
-            self.show_status("NOTE：Label结果将会保存")
+            self.show_status("Labels results will be saved")
 
             # 将 YOLO 实例的保存标签的标志设置为 True
             self.yolo_thread_cam.save_txt_cam = True
@@ -1751,7 +1762,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.save_txt_button_cam.setCheckState(Qt.CheckState(save_txt_cam))
         self.yolo_predict_cam.save_txt_cam = False if save_txt_cam == 0 else True
         self.run_button_cam.setChecked(False)
-        self.show_status("欢迎使用YOLOv8检测系统，请选择Mode")
+        self.show_status("Please select mode")
         # self.show_status("目前为image or video检测页面")
 
     # 关闭事件，退出线程，保存设置
@@ -1790,7 +1801,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             MessageBox(
                 self.close_button,
                 title="Note",
-                text="Exiting, please wait...",
+                text="Exiting",
                 time=3000,
                 auto=True,
             ).exec()
@@ -1807,9 +1818,5 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     Home = MainWindow()
-    # 创建相机线程
-    # camera_thread = CameraThread()
-    # camera_thread.imageCaptured.connect(Home.cam_data)
-    # camera_thread.start()
     Home.show()
     sys.exit(app.exec())
