@@ -165,9 +165,9 @@ class YoloPredictor(BasePredictor, QObject):
                 # 开始检测
                 count = 0  # frame count
                 start_time = time.time()  # 用于计算帧率
-                # batch = iter(self.dataset)
-                for batch in self.dataset:
-                    # while True:
+                batch = iter(self.dataset)
+                # for batch in self.dataset:
+                while True:
                     # 终止检测标志检测
                     if self.stop_dtc:
                         if isinstance(self.vid_writer[-1], cv2.VideoWriter):
@@ -185,7 +185,7 @@ class YoloPredictor(BasePredictor, QObject):
                     if self.continue_dtc:
                         # time.sleep(0.001)
                         self.yolo2main_status_msg.emit("Detecting")
-                        # batch = next(self.dataset)  # 获取下一个数据
+                        batch = next(self.dataset)  # 获取下一个数据
 
                         self.batch = batch
                         path, im0s, vid_cap, s = batch
@@ -609,7 +609,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pushButton_classify.clicked.connect(self.button_classify)
         self.pushButton_segment.clicked.connect(self.button_segment)
         # self.pushButton_track.setEnabled(False)
-        
+
         # self.src_cam_button.setEnabled(False)
         # self.src_rtsp_button.setEnabled(False)
         self.src_file_button.setEnabled(False)
@@ -1050,8 +1050,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 lambda: UIFuncitons.settingBox(self, True)
             )  # 右上方设置按钮
             self.ToggleBotton.clicked.connect(
-            lambda: UIFuncitons.toggleMenu(self, True)
-        )  # 左侧导航按钮
+                lambda: UIFuncitons.toggleMenu(self, True)
+            )  # 左侧导航按钮
 
         if self.PageIndex == 0:
             # 设置配置档路径
@@ -1355,7 +1355,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 lambda: UIFuncitons.cam_settingBox(self, True)
             )  # 右上方设置按钮
             self.ToggleBotton.clicked.connect(
-            lambda: UIFuncitons.toggleMenu(self, True)
+                lambda: UIFuncitons.toggleMenu(self, True)
             )  # 左侧导航按钮
 
     # cam控制开始/暂停检测
