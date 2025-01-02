@@ -598,16 +598,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pushButton_classify.clicked.connect(self.button_classify)
         self.pushButton_segment.clicked.connect(self.button_segment)
         # self.pushButton_track.setEnabled(False)
-
+        
+        # self.src_cam_button.setEnabled(False)
+        # self.src_rtsp_button.setEnabled(False)
         self.src_file_button.setEnabled(False)
-        self.src_cam_button.setEnabled(False)
-        self.src_rtsp_button.setEnabled(False)
+        self.settings_button.clicked.connect(
+            lambda: UIFuncitons.settingBox(self, False)
+        )  # 右上方设置按钮
+        self.ToggleBotton.clicked.connect(
+            lambda: UIFuncitons.toggleMenu(self, False)
+        )  # 左侧导航按钮
         ####################################image or video####################################
         # 显示模块阴影
-        UIFuncitons.shadow_style(self, self.Class_QF, QColor(162, 129, 247))
-        UIFuncitons.shadow_style(self, self.Target_QF, QColor(251, 157, 139))
-        UIFuncitons.shadow_style(self, self.Fps_QF, QColor(170, 128, 213))
-        UIFuncitons.shadow_style(self, self.Model_QF, QColor(64, 186, 193))
+        # UIFuncitons.shadow_style(self, self.Class_QF, QColor(162, 129, 247))
+        # UIFuncitons.shadow_style(self, self.Target_QF, QColor(251, 157, 139))
+        # UIFuncitons.shadow_style(self, self.Fps_QF, QColor(170, 128, 213))
+        # UIFuncitons.shadow_style(self, self.Model_QF, QColor(64, 186, 193))
 
         # YOLO-v8 线程
         self.yolo_predict = YoloPredictor()  # 创建 YOLO 实例
@@ -667,9 +673,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # 选择检测来源
         self.src_file_button.clicked.connect(self.open_src_file)  # 选择本地文件
-        self.src_rtsp_button.clicked.connect(
-            self.show_status("The function has not yet been implemented.")
-        )  # 选择 RTSP
+        # self.src_rtsp_button.clicked.connect(
+        #     self.show_status("The function has not yet been implemented.")
+        # )  # 选择 RTSP
 
         # 开始测试按钮
         self.run_button.clicked.connect(self.run_or_continue)  # 暂停/开始
@@ -683,10 +689,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ####################################camera####################################
         self.cam_data = np.array([])
         # 显示cam模块阴影
-        UIFuncitons.shadow_style(self, self.Class_QF_cam, QColor(162, 129, 247))
-        UIFuncitons.shadow_style(self, self.Target_QF_cam, QColor(251, 157, 139))
-        UIFuncitons.shadow_style(self, self.Fps_QF_cam, QColor(170, 128, 213))
-        UIFuncitons.shadow_style(self, self.Model_QF_cam, QColor(64, 186, 193))
+        # UIFuncitons.shadow_style(self, self.Class_QF_cam, QColor(162, 129, 247))
+        # UIFuncitons.shadow_style(self, self.Target_QF_cam, QColor(251, 157, 139))
+        # UIFuncitons.shadow_style(self, self.Fps_QF_cam, QColor(170, 128, 213))
+        # UIFuncitons.shadow_style(self, self.Model_QF_cam, QColor(64, 186, 193))
 
         # YOLO-v8-cam线程
         self.yolo_predict_cam = YoloPredictor()  # 创建 YOLO 实例
@@ -750,7 +756,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.Model_name_cam.setText(self.select_model_cam)
 
         # 选择检测来源
-        self.src_cam_button.clicked.connect(self.cam_button)  # 选择摄像机
+        # self.src_cam_button.clicked.connect(self.cam_button)  # 选择摄像机
 
         # 开始测试按钮
         self.run_button_cam.clicked.connect(self.cam_run_or_continue)  # 暂停/开始
@@ -761,9 +767,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.save_txt_button_cam.toggled.connect(self.cam_is_save_txt)  # 保存标签选项
         ####################################camera####################################
 
-        self.ToggleBotton.clicked.connect(
-            lambda: UIFuncitons.toggleMenu(self, True)
-        )  # 左侧导航按钮
+        # self.ToggleBotton.clicked.connect(
+        #     lambda: UIFuncitons.toggleMenu(self, True)
+        # )  # 左侧导航按钮
 
         # 初始化
         self.load_config()
@@ -775,11 +781,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.content.setCurrentIndex(0)
         self.src_file_button.setEnabled(True)
-        self.src_cam_button.setEnabled(True)
-        self.src_rtsp_button.setEnabled(True)
+        # self.src_cam_button.setEnabled(True)
+        # self.src_rtsp_button.setEnabled(True)
         self.settings_button.clicked.connect(
             lambda: UIFuncitons.settingBox(self, True)
         )  # 右上方设置按钮
+        self.ToggleBotton.clicked.connect(
+            lambda: UIFuncitons.toggleMenu(self, True)
+        )  # 左侧导航按钮
 
         # 读取模型文件夹
         self.pt_list = os.listdir("./models/classify/")
@@ -820,11 +829,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
         self.content.setCurrentIndex(0)
         self.src_file_button.setEnabled(True)
-        self.src_cam_button.setEnabled(True)
-        self.src_rtsp_button.setEnabled(True)
+        # self.src_cam_button.setEnabled(True)
+        # self.src_rtsp_button.setEnabled(True)
         self.settings_button.clicked.connect(
             lambda: UIFuncitons.settingBox(self, True)
         )  # 右上方设置按钮
+        self.ToggleBotton.clicked.connect(
+            lambda: UIFuncitons.toggleMenu(self, True)
+        )  # 左侧导航按钮
 
         # 读取模型文件夹
         self.pt_list = os.listdir("./models/detect/")
@@ -865,11 +877,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
         self.content.setCurrentIndex(0)
         self.src_file_button.setEnabled(True)
-        self.src_cam_button.setEnabled(True)
-        self.src_rtsp_button.setEnabled(True)
+        # self.src_cam_button.setEnabled(True)
+        # self.src_rtsp_button.setEnabled(True)
         self.settings_button.clicked.connect(
             lambda: UIFuncitons.settingBox(self, True)
         )  # 右上方设置按钮
+        self.ToggleBotton.clicked.connect(
+            lambda: UIFuncitons.toggleMenu(self, True)
+        )  # 左侧导航按钮
 
         # 读取模型文件夹
         self.pt_list = os.listdir("./models/pose/")
@@ -910,11 +925,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
         self.content.setCurrentIndex(0)
         self.src_file_button.setEnabled(True)
-        self.src_cam_button.setEnabled(False)
-        self.src_rtsp_button.setEnabled(True)
+        # self.src_cam_button.setEnabled(False)
+        # self.src_rtsp_button.setEnabled(True)
         self.settings_button.clicked.connect(
             lambda: UIFuncitons.settingBox(self, True)
         )  # 右上方设置按钮
+        self.ToggleBotton.clicked.connect(
+            lambda: UIFuncitons.toggleMenu(self, True)
+        )  # 左侧导航按钮
 
         # 读取模型文件夹
         self.pt_list = os.listdir("./models/segment/")
@@ -955,11 +973,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
         self.content.setCurrentIndex(0)
         self.src_file_button.setEnabled(True)
-        self.src_cam_button.setEnabled(True)
-        self.src_rtsp_button.setEnabled(True)
+        # self.src_cam_button.setEnabled(True)
+        # self.src_rtsp_button.setEnabled(True)
         self.settings_button.clicked.connect(
             lambda: UIFuncitons.settingBox(self, True)
         )  # 右上方设置按钮
+        self.ToggleBotton.clicked.connect(
+            lambda: UIFuncitons.toggleMenu(self, True)
+        )  # 左侧导航按钮
 
         # 读取模型文件夹
         self.pt_list = os.listdir("./models/track/")
@@ -1017,6 +1038,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.settings_button.clicked.connect(
                 lambda: UIFuncitons.settingBox(self, True)
             )  # 右上方设置按钮
+            self.ToggleBotton.clicked.connect(
+            lambda: UIFuncitons.toggleMenu(self, True)
+        )  # 左侧导航按钮
 
         if self.PageIndex == 0:
             # 设置配置档路径
@@ -1319,6 +1343,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.settings_button.clicked.connect(
                 lambda: UIFuncitons.cam_settingBox(self, True)
             )  # 右上方设置按钮
+            self.ToggleBotton.clicked.connect(
+            lambda: UIFuncitons.toggleMenu(self, True)
+            )  # 左侧导航按钮
 
     # cam控制开始/暂停检测
     def cam_run_or_continue(self):
