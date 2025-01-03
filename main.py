@@ -601,9 +601,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         UIFuncitons.uiDefinitions(self)  # 自定义介面定义
 
         # 初始页面
+        # 0: video page
+        # 1: home page
+        # 2: camera page
         self.task = ""
+        # Jump to the home page
         self.PageIndex = 1
         self.content.setCurrentIndex(self.PageIndex)
+
         self.pushButton_detect.clicked.connect(self.button_detect)
         self.pushButton_pose.clicked.connect(self.button_pose)
         self.pushButton_classify.clicked.connect(self.button_classify)
@@ -612,12 +617,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # self.src_cam_button.setEnabled(False)
         # self.src_rtsp_button.setEnabled(False)
-        self.src_file_button.setEnabled(False)
+        self.src_file_button.setEnabled(True)
+        self.src_back_button.clicked.connect(
+            lambda: UIFuncitons.back_to_home(self)
+        )
         self.settings_button.clicked.connect(
             lambda: UIFuncitons.settingBox(self, False)
         )  # 右上方设置按钮
         self.ToggleBotton.clicked.connect(
-            lambda: UIFuncitons.toggleMenu(self, False)
+            lambda: UIFuncitons.toggleMenu(self, True)
         )  # 左侧导航按钮
         ####################################image or video####################################
         # 显示模块阴影
@@ -785,12 +793,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # 初始化
         self.load_config()
 
-    def button_classify(self):  # 触发button_detect后的事件
+    def button_classify(self):  # 触发button_classify后的事件
         self.task = "Classify"
         self.yolo_predict.task = self.task
         self.yolo_predict_cam.task = self.task
 
-        self.content.setCurrentIndex(0)
+        self.PageIndex = 0
+        self.content.setCurrentIndex(self.PageIndex)
         self.src_file_button.setEnabled(True)
         # self.src_cam_button.setEnabled(True)
         # self.src_rtsp_button.setEnabled(True)
@@ -828,7 +837,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )  # 按文件大小排序
         self.model_box_cam.clear()
         self.model_box_cam.addItems(self.pt_list_cam)
-        self.show_status("Mode: classify")
+        self.show_status("Mode: Classify")
 
     def button_detect(self):  # 触发button_detect后的事件
         self.task = "Detect"
@@ -838,7 +847,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.yolo_predict_cam.new_model_name = (
             "./models/detect/%s" % self.select_model_cam
         )
-        self.content.setCurrentIndex(0)
+
+        self.PageIndex = 0
+        self.content.setCurrentIndex(self.PageIndex)
         self.src_file_button.setEnabled(True)
         # self.src_cam_button.setEnabled(True)
         # self.src_rtsp_button.setEnabled(True)
@@ -876,9 +887,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )  # 按文件大小排序
         self.model_box_cam.clear()
         self.model_box_cam.addItems(self.pt_list_cam)
-        self.show_status("Mode: detect")
+        self.show_status("Mode: Detect")
 
-    def button_pose(self):  # 触发button_detect后的事件
+    def button_pose(self):  # 触发button_pose后的事件
         self.task = "Pose"
         self.yolo_predict.task = self.task
         self.yolo_predict_cam.task = self.task
@@ -886,7 +897,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.yolo_predict_cam.new_model_name = (
             "./models/pose/%s" % self.select_model_cam
         )
-        self.content.setCurrentIndex(0)
+        self.PageIndex = 0
+        self.content.setCurrentIndex(self.PageIndex)
         self.src_file_button.setEnabled(True)
         # self.src_cam_button.setEnabled(True)
         # self.src_rtsp_button.setEnabled(True)
@@ -924,9 +936,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )  # 按文件大小排序
         self.model_box_cam.clear()
         self.model_box_cam.addItems(self.pt_list_cam)
-        self.show_status("Mode: pose")
+        self.show_status("Mode: Pose")
 
-    def button_segment(self):  # 触发button_detect后的事件
+    def button_segment(self):  # 触发button_segment后的事件
         self.task = "Segment"
         self.yolo_predict.task = self.task
         self.yolo_predict_cam.task = self.task
@@ -934,7 +946,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.yolo_predict_cam.new_model_name = (
             "./models/segment/%s" % self.select_model_cam
         )
-        self.content.setCurrentIndex(0)
+        self.PageIndex = 0
+        self.content.setCurrentIndex(self.PageIndex)
         self.src_file_button.setEnabled(True)
         # self.src_cam_button.setEnabled(False)
         # self.src_rtsp_button.setEnabled(True)
@@ -972,9 +985,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )  # 按文件大小排序
         self.model_box_cam.clear()
         self.model_box_cam.addItems(self.pt_list_cam)
-        self.show_status("Mode: segment")
+        self.show_status("Mode: Segment")
 
-    def button_track(self):  # 触发button_detect后的事件
+    def button_track(self):  # 触发button_track后的事件
         self.task = "Track"
         self.yolo_predict.task = self.task
         self.yolo_predict_cam.task = self.task
@@ -982,7 +995,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.yolo_predict_cam.new_model_name = (
             "./models/track/%s" % self.select_model_cam
         )
-        self.content.setCurrentIndex(0)
+        self.PageIndex = 0
+        self.content.setCurrentIndex(self.PageIndex)
         self.src_file_button.setEnabled(True)
         # self.src_cam_button.setEnabled(True)
         # self.src_rtsp_button.setEnabled(True)
@@ -1020,32 +1034,29 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )  # 按文件大小排序
         self.model_box_cam.clear()
         self.model_box_cam.addItems(self.pt_list_cam)
-        self.show_status("Mode: track")
+        self.show_status("Mode: Track")
 
     ####################################image or video####################################
     # 选择本地档案
     def open_src_file(self):
         if self.task == "Classify":
-            self.show_status("Mode: classify")
+            self.show_status("Mode: Classify")
         if self.task == "Detect":
-            self.show_status("Mode: detect")
+            self.show_status("Mode: Detect")
         if self.task == "Pose":
-            self.show_status("Mode: pose")
+            self.show_status("Mode: Pose")
         if self.task == "Segment":
-            self.show_status("Mode: segment")
+            self.show_status("Mode: Segment")
         if self.task == "Track":
-            self.show_status("Mode: track")
+            self.show_status("Mode: Track")
 
         # 结束cam线程，节省资源
         if self.yolo_thread_cam.isRunning():
             self.yolo_thread_cam.quit()  # 结束线程
             self.cam_stop()
-        # 0:image/video page
-        # 1:home page
-        # 2:camera page
-        if self.PageIndex != 0:
-            self.PageIndex = 0
-            self.content.setCurrentIndex(self.PageIndex)
+
+        if self.PageIndex == 0:
+
             self.settings_button.clicked.connect(
                 lambda: UIFuncitons.settingBox(self, True)
             )  # 右上方设置按钮
@@ -1053,7 +1064,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 lambda: UIFuncitons.toggleMenu(self, True)
             )  # 左侧导航按钮
 
-        if self.PageIndex == 0:
             # 设置配置档路径
             config_file = "config/fold.json"
 
@@ -1086,7 +1096,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.yolo_predict.source = name
 
                 # 显示档案载入状态
-                self.show_status("Load source: {}".format(os.path.basename(name)))
+                self.show_status("Load resource: {}".format(os.path.basename(name)))
 
                 # 更新配置档中的上次打开的资料夹路径
                 config["open_fold"] = os.path.dirname(name)
@@ -1145,7 +1155,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def run_or_continue(self):
         # 检查 YOLO 预测的来源是否为空
         if self.yolo_predict.source == "":
-            self.show_status("Please open a video source")
+            self.show_status("Please open a resource")
             self.run_button.setChecked(False)
         else:
             # 设置 YOLO 预测的停止标志为 False
@@ -1215,13 +1225,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def is_save_res(self):
         if self.save_res_button.checkState() == Qt.CheckState.Unchecked:
             # 显示消息，提示运行图片结果不会保存
-            self.show_status("Image results won't be saved")
+            self.show_status("Resource won't be saved")
 
             # 将 YOLO 实例的保存结果的标志设置为 False
             self.yolo_predict.save_res = False
         elif self.save_res_button.checkState() == Qt.CheckState.Checked:
             # 显示消息，提示运行图片结果将会保存
-            self.show_status("Image results will be saved")
+            self.show_status("Resource will be saved")
 
             # 将 YOLO 实例的保存结果的标志设置为 True
             self.yolo_predict.save_res = True
@@ -1342,12 +1352,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     ####################################camera####################################
     def cam_button(self):
         self.yolo_predict_cam.source = 0
-        self.show_status("webcam detection")
+        self.show_status("Webcam Detection")
         # 结束image or video线程，节省资源
         if self.yolo_thread.isRunning():
             self.yolo_thread.quit()  # 结束线程
             self.stop()
 
+        # Jump to the camera page
         if self.PageIndex != 2:
             self.PageIndex = 2
             self.content.setCurrentIndex(self.PageIndex)
@@ -1361,7 +1372,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     # cam控制开始/暂停检测
     def cam_run_or_continue(self):
         if self.yolo_predict_cam.source == "":
-            self.show_status("Don't have camera source")
+            self.show_status("Don't have camera ")
             self.run_button_cam.setChecked(False)
 
         else:
@@ -1547,13 +1558,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def cam_is_save_res(self):
         if self.save_res_button_cam.checkState() == Qt.CheckState.Unchecked:
             # 显示消息，提示运行图片结果不会保存
-            self.show_status("Image results won't be saved")
+            self.show_status("Resource won't be saved")
 
             # 将 YOLO 实例的保存结果的标志设置为 False
             self.yolo_thread_cam.save_res = False
         elif self.save_res_button_cam.checkState() == Qt.CheckState.Checked:
             # 显示消息，提示运行图片结果将会保存
-            self.show_status("Image results will be saved")
+            self.show_status("Resource will be saved")
 
             # 将 YOLO 实例的保存结果的标志设置为 True
             self.yolo_thread_cam.save_res = True
@@ -1762,8 +1773,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.save_txt_button_cam.setCheckState(Qt.CheckState(save_txt_cam))
         self.yolo_predict_cam.save_txt_cam = False if save_txt_cam == 0 else True
         self.run_button_cam.setChecked(False)
-        self.show_status("Please select mode")
-        # self.show_status("目前为image or video检测页面")
+        self.show_status("Please select a mode")
 
     # 关闭事件，退出线程，保存设置
     def closeEvent(self, event):

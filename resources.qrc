@@ -15,13 +15,12 @@
         <file>img/set.png</file>
         <file>img/menu.png</file>
         <file>img/file.png</file>
-        <file>img/cam.png</file>
+        <file>img/back.png</file>
         <file>img/RTSP.png</file>
         <file>img/classify.png</file>
         <file>img/detect.png</file>
         <file>img/pose.png</file>
         <file>img/segment.png</file>
-        <file>img/track.png</file>
-        <file>img/logo.jpg</file>
+        <file>img/logo.png</file>
     </qresource>
 </RCC>

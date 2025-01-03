@@ -19,7 +19,8 @@ from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDoubleSpinBo
     QFrame, QGridLayout, QHBoxLayout, QLabel,
     QLayout, QMainWindow, QProgressBar, QPushButton,
     QSizePolicy, QSlider, QSpacerItem, QSpinBox,
-    QSplitter, QStackedWidget, QVBoxLayout, QWidget)
+    QSplitter, QStackedWidget, QToolButton, QVBoxLayout,
+    QWidget)
 import resources_rc
 
 class Ui_MainWindow(object):
@@ -75,7 +76,7 @@ class Ui_MainWindow(object):
         self.logo.setSizePolicy(sizePolicy)
         self.logo.setMinimumSize(QSize(50, 50))
         self.logo.setMaximumSize(QSize(50, 50))
-        self.logo.setStyleSheet(u"image: url(:/all/img/logo.jpg);\n"
+        self.logo.setStyleSheet(u"image: url(:/all/img/logo.png);\n"
 "border:5px solid rgb(255, 255, 255);\n"
 "border-radius:10px")
         self.Author = QLabel(self.TopLogoInfo)
@@ -186,6 +187,29 @@ class Ui_MainWindow(object):
 "}")
 
         self.verticalLayout_5.addWidget(self.src_file_button)
+
+        self.src_back_button = QPushButton(self.MenuBox)
+        self.src_back_button.setObjectName(u"src_back_button")
+        self.src_back_button.setMinimumSize(QSize(0, 45))
+        self.src_back_button.setCursor(QCursor(Qt.PointingHandCursor))
+        self.src_back_button.setStyleSheet(u"QPushButton{\n"
+"background-image: url(:/all/img/back.png);\n"
+"background-repeat: no-repeat;\n"
+"background-position: left center;\n"
+"border: none;\n"
+"border-left: 23px solid transparent;\n"
+"\n"
+"text-align: center;\n"
+"padding-left: 0px;\n"
+"color: rgb(255, 255, 255);\n"
+"font: 600 12pt \"Segoe UI\";\n"
+"}\n"
+"\n"
+"QPushButton:hover{\n"
+"background-color: rgb(97, 192, 191);\n"
+"}")
+
+        self.verticalLayout_5.addWidget(self.src_back_button)
 
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
@@ -349,17 +373,17 @@ class Ui_MainWindow(object):
         self.content.setObjectName(u"content")
         self.content.setStyleSheet(u"")
         self.content.setFrameShadow(QFrame.Raised)
-        self.Page0 = QWidget()
-        self.Page0.setObjectName(u"Page0")
-        self.Page0.setStyleSheet(u"background: transparent;")
-        self.horizontalLayout_5 = QHBoxLayout(self.Page0)
+        self.video_page = QWidget()
+        self.video_page.setObjectName(u"video_page")
+        self.video_page.setStyleSheet(u"background: transparent;")
+        self.horizontalLayout_5 = QHBoxLayout(self.video_page)
         self.horizontalLayout_5.setSpacing(0)
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
         self.horizontalLayout_5.setContentsMargins(-1, 0, 0, 0)
         self.main_content = QVBoxLayout()
         self.main_content.setSpacing(10)
         self.main_content.setObjectName(u"main_content")
-        self.char_label = QLabel(self.Page0)
+        self.char_label = QLabel(self.video_page)
         self.char_label.setObjectName(u"char_label")
         self.char_label.setMinimumSize(QSize(0, 30))
         self.char_label.setMaximumSize(QSize(16777215, 30))
@@ -370,7 +394,7 @@ class Ui_MainWindow(object):
 
         self.main_content.addWidget(self.char_label)
 
-        self.QF_Group = QFrame(self.Page0)
+        self.QF_Group = QFrame(self.video_page)
         self.QF_Group.setObjectName(u"QF_Group")
         self.QF_Group.setMinimumSize(QSize(0, 100))
         self.QF_Group.setMaximumSize(QSize(16777215, 100))
@@ -713,7 +737,7 @@ class Ui_MainWindow(object):
 
         self.main_content.addWidget(self.QF_Group)
 
-        self.Result_QF = QFrame(self.Page0)
+        self.Result_QF = QFrame(self.video_page)
         self.Result_QF.setObjectName(u"Result_QF")
         self.Result_QF.setStyleSheet(u"")
         self.Result_QF.setFrameShadow(QFrame.Raised)
@@ -748,7 +772,7 @@ class Ui_MainWindow(object):
 
         self.main_content.addWidget(self.Result_QF)
 
-        self.Pause_QF = QFrame(self.Page0)
+        self.Pause_QF = QFrame(self.video_page)
         self.Pause_QF.setObjectName(u"Pause_QF")
         self.Pause_QF.setMinimumSize(QSize(0, 30))
         self.Pause_QF.setMaximumSize(QSize(16777215, 30))
@@ -828,7 +852,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_5.addLayout(self.main_content)
 
-        self.prm_page = QFrame(self.Page0)
+        self.prm_page = QFrame(self.video_page)
         self.prm_page.setObjectName(u"prm_page")
         self.prm_page.setMinimumSize(QSize(0, 0))
         self.prm_page.setMaximumSize(QSize(0, 16777215))
@@ -1434,115 +1458,126 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_5.addWidget(self.prm_page)
 
-        self.content.addWidget(self.Page0)
-        self.home = QWidget()
-        self.home.setObjectName(u"home")
-        self.home.setStyleSheet(u"background: transparent;")
-        self.horizontalLayout_46 = QHBoxLayout(self.home)
-        self.horizontalLayout_46.setSpacing(0)
-        self.horizontalLayout_46.setObjectName(u"horizontalLayout_46")
-        self.horizontalLayout_46.setContentsMargins(9, 0, 0, 0)
+        self.content.addWidget(self.video_page)
+        self.home_page = QWidget()
+        self.home_page.setObjectName(u"home_page")
+        self.home_page.setStyleSheet(u"background: transparent;")
+        self.horizontalLayout_1 = QHBoxLayout(self.home_page)
+        self.horizontalLayout_1.setSpacing(0)
+        self.horizontalLayout_1.setObjectName(u"horizontalLayout_1")
+        self.horizontalLayout_1.setContentsMargins(0, 0, 0, 0)
         self.gridLayout = QGridLayout()
         self.gridLayout.setSpacing(0)
         self.gridLayout.setObjectName(u"gridLayout")
         self.gridLayout.setSizeConstraint(QLayout.SetDefaultConstraint)
-        self.gridLayout.setContentsMargins(-1, -1, -1, 0)
+        self.gridLayout.setContentsMargins(-1, 10, -1, 5)
         self.gridLayout_3 = QGridLayout()
-        self.gridLayout_3.setSpacing(6)
+        self.gridLayout_3.setSpacing(0)
         self.gridLayout_3.setObjectName(u"gridLayout_3")
-        self.pushButton_classify = QPushButton(self.home)
+        self.pushButton_classify = QToolButton(self.home_page)
         self.pushButton_classify.setObjectName(u"pushButton_classify")
         sizePolicy.setHeightForWidth(self.pushButton_classify.sizePolicy().hasHeightForWidth())
         self.pushButton_classify.setSizePolicy(sizePolicy)
         self.pushButton_classify.setMinimumSize(QSize(200, 200))
         self.pushButton_classify.setMaximumSize(QSize(16777215, 16777215))
-        self.pushButton_classify.setStyleSheet(u"QPushButton{\n"
-"qproperty-icon: url(:/all/img/classify.png);\n"
-"icon-size: 400px;\n"
-"background-repeat: no-repeat;\n"
-"background-position: center;\n"
-"border: none;\n"
-"}\n"
-"\n"
-"QPushButton:hover{\n"
-"background-color: rgba(114, 129, 214, 59);\n"
-"}")
-        self.pushButton_classify.setIconSize(QSize(300, 300))
+        self.pushButton_classify.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
+        self.pushButton_classify.setStyleSheet(u"\n"
+"                                QToolButton {\n"
+"                                    qproperty-icon: url(:/all/img/classify.png);\n"
+"                                    background-repeat: no-repeat;\n"
+"                                    background-position: center;\n"
+"                                    border: none;\n"
+"                                    padding-top: 120px;\n"
+"                                }\n"
+"                                QToolButton:hover {\n"
+"                                    background-color: rgba(210, 180, 222, 0.25);\n"
+"                                }\n"
+"                            ")
+        font7 = QFont()
+        font7.setFamilies([u"Segoe UI"])
+        font7.setPointSize(20)
+        font7.setItalic(False)
+        font7.setUnderline(False)
+        self.pushButton_classify.setFont(font7)
+        self.pushButton_classify.setIconSize(QSize(400, 400))
 
-        self.gridLayout_3.addWidget(self.pushButton_classify, 1, 0, 1, 1)
+        self.gridLayout_3.addWidget(self.pushButton_classify, 1, 1, 1, 1)
 
-        self.pushButton_segment = QPushButton(self.home)
+        self.pushButton_segment = QToolButton(self.home_page)
         self.pushButton_segment.setObjectName(u"pushButton_segment")
         sizePolicy.setHeightForWidth(self.pushButton_segment.sizePolicy().hasHeightForWidth())
         self.pushButton_segment.setSizePolicy(sizePolicy)
         self.pushButton_segment.setMinimumSize(QSize(200, 200))
         self.pushButton_segment.setMaximumSize(QSize(16777215, 16777215))
-        self.pushButton_segment.setLayoutDirection(Qt.LeftToRight)
-        self.pushButton_segment.setStyleSheet(u"QPushButton{\n"
-"qproperty-icon: url(:/all/img/segment.png);\n"
-"icon-size: 400px;\n"
-"background-repeat: no-repeat;\n"
-"background-position: center;\n"
-"border: none;\n"
-"}\n"
-"\n"
-"QPushButton:hover{\n"
-"background-color: rgba(114, 129, 214, 59);\n"
-"}")
-        self.pushButton_segment.setIconSize(QSize(300, 300))
+        self.pushButton_segment.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
+        self.pushButton_segment.setStyleSheet(u"\n"
+"                                QToolButton {\n"
+"                                    qproperty-icon: url(:/all/img/segment.png);\n"
+"                                    background-repeat: no-repeat;\n"
+"                                    background-position: center;\n"
+"                                    border: none;\n"
+"                                    padding-top: 120px;\n"
+"                                }\n"
+"                                QToolButton:hover {\n"
+"                                    background-color: rgba(210, 180, 222, 0.25);\n"
+"                                }\n"
+"                            ")
+        self.pushButton_segment.setFont(font7)
+        self.pushButton_segment.setIconSize(QSize(400, 400))
 
-        self.gridLayout_3.addWidget(self.pushButton_segment, 1, 2, 1, 1)
+        self.gridLayout_3.addWidget(self.pushButton_segment, 1, 4, 1, 1)
 
-        self.pushButton_detect = QPushButton(self.home)
+        self.pushButton_detect = QToolButton(self.home_page)
         self.pushButton_detect.setObjectName(u"pushButton_detect")
         self.pushButton_detect.setEnabled(True)
         sizePolicy.setHeightForWidth(self.pushButton_detect.sizePolicy().hasHeightForWidth())
         self.pushButton_detect.setSizePolicy(sizePolicy)
         self.pushButton_detect.setMinimumSize(QSize(200, 200))
         self.pushButton_detect.setMaximumSize(QSize(16777215, 16777215))
-        self.pushButton_detect.setStyleSheet(u"QPushButton{\n"
-"qproperty-icon: url(:/all/img/detect.png);\n"
-"icon-size: 400px;\n"
-"background-repeat: no-repeat;\n"
-"background-position: center;\n"
-"border: none;\n"
-"}\n"
-"\n"
-"QPushButton:hover{\n"
-"background-color: rgba(114, 129, 214, 59);\n"
-"}")
-        self.pushButton_detect.setIconSize(QSize(300, 300))
+        self.pushButton_detect.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
+        self.pushButton_detect.setStyleSheet(u"\n"
+"                                QToolButton {\n"
+"                                    qproperty-icon: url(:/all/img/detect.png);\n"
+"                                    background-repeat: no-repeat;\n"
+"                                    background-position: center;\n"
+"                                    border: none;\n"
+"                                    padding-top: 120px;\n"
+"                                }\n"
+"                                QToolButton:hover {\n"
+"                                    background-color: rgba(210, 180, 222, 0.25);\n"
+"                                }\n"
+"                            ")
+        self.pushButton_detect.setFont(font7)
+        self.pushButton_detect.setIconSize(QSize(400, 400))
 
-        self.gridLayout_3.addWidget(self.pushButton_detect, 1, 1, 1, 1)
+        self.gridLayout_3.addWidget(self.pushButton_detect, 1, 2, 1, 1)
 
-
-        self.gridLayout.addLayout(self.gridLayout_3, 1, 0, 1, 1)
-
-        self.gridLayout_4 = QGridLayout()
-        self.gridLayout_4.setObjectName(u"gridLayout_4")
-        self.pushButton_pose = QPushButton(self.home)
+        self.pushButton_pose = QToolButton(self.home_page)
         self.pushButton_pose.setObjectName(u"pushButton_pose")
         sizePolicy.setHeightForWidth(self.pushButton_pose.sizePolicy().hasHeightForWidth())
         self.pushButton_pose.setSizePolicy(sizePolicy)
         self.pushButton_pose.setMinimumSize(QSize(200, 200))
         self.pushButton_pose.setMaximumSize(QSize(16777215, 16777215))
-        self.pushButton_pose.setStyleSheet(u"QPushButton{\n"
-"qproperty-icon: url(:/all/img/pose.png);\n"
-"icon-size: 400px;\n"
-"background-repeat: no-repeat;\n"
-"background-position: center;\n"
-"border: none;\n"
-"}\n"
-"\n"
-"QPushButton:hover{\n"
-"background-color: rgba(114, 129, 214, 59);\n"
-"}")
-        self.pushButton_pose.setIconSize(QSize(300, 300))
+        self.pushButton_pose.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
+        self.pushButton_pose.setStyleSheet(u"\n"
+"                                QToolButton {\n"
+"                                    qproperty-icon: url(:/all/img/pose.png);\n"
+"                                    background-repeat: no-repeat;\n"
+"                                    background-position: center;\n"
+"                                    border: none;\n"
+"                                    padding-top: 120px;\n"
+"                                }\n"
+"                                QToolButton:hover {\n"
+"                                    background-color: rgba(210, 180, 222, 0.25);\n"
+"                                }\n"
+"                            ")
+        self.pushButton_pose.setFont(font7)
+        self.pushButton_pose.setIconSize(QSize(400, 400))
 
-        self.gridLayout_4.addWidget(self.pushButton_pose, 0, 0, 1, 1)
+        self.gridLayout_3.addWidget(self.pushButton_pose, 1, 3, 1, 1)
 
 
-        self.gridLayout.addLayout(self.gridLayout_4, 1, 2, 1, 1)
+        self.gridLayout.addLayout(self.gridLayout_3, 1, 0, 1, 1)
 
         self.horizontalLayout_41 = QHBoxLayout()
         self.horizontalLayout_41.setObjectName(u"horizontalLayout_41")
@@ -1550,27 +1585,27 @@ class Ui_MainWindow(object):
         self.gridLayout.addLayout(self.horizontalLayout_41, 1, 1, 1, 1)
 
 
-        self.horizontalLayout_46.addLayout(self.gridLayout)
+        self.horizontalLayout_1.addLayout(self.gridLayout)
 
-        self.content.addWidget(self.home)
-        self.page1 = QWidget()
-        self.page1.setObjectName(u"page1")
-        sizePolicy.setHeightForWidth(self.page1.sizePolicy().hasHeightForWidth())
-        self.page1.setSizePolicy(sizePolicy)
-        self.page1.setStyleSheet(u"background: transparent;")
-        self.horizontalLayout_24 = QHBoxLayout(self.page1)
+        self.content.addWidget(self.home_page)
+        self.camera_page = QWidget()
+        self.camera_page.setObjectName(u"camera_page")
+        sizePolicy.setHeightForWidth(self.camera_page.sizePolicy().hasHeightForWidth())
+        self.camera_page.setSizePolicy(sizePolicy)
+        self.camera_page.setStyleSheet(u"background: transparent;")
+        self.horizontalLayout_24 = QHBoxLayout(self.camera_page)
         self.horizontalLayout_24.setSpacing(0)
         self.horizontalLayout_24.setObjectName(u"horizontalLayout_24")
         self.horizontalLayout_24.setContentsMargins(-1, 0, 0, 0)
         self.main_content_cam = QVBoxLayout()
         self.main_content_cam.setSpacing(5)
         self.main_content_cam.setObjectName(u"main_content_cam")
-        self.QF_Group_cam = QFrame(self.page1)
+        self.QF_Group_cam = QFrame(self.camera_page)
         self.QF_Group_cam.setObjectName(u"QF_Group_cam")
         self.QF_Group_cam.setMinimumSize(QSize(0, 100))
         self.QF_Group_cam.setMaximumSize(QSize(16777215, 100))
         self.QF_Group_cam.setStyleSheet(u"QFrame#QF_Group_cam{\n"
-"background-color: rgb(238, 242, 255);\n"
+"background-color: rgb(255, 255, 255);\n"
 "border:2px solid rgb(255, 255, 255);\n"
 "border-radius:15px;\n"
 "}")
@@ -1977,7 +2012,7 @@ class Ui_MainWindow(object):
 
         self.main_content_cam.addWidget(self.QF_Group_cam)
 
-        self.Result_QF_cam = QFrame(self.page1)
+        self.Result_QF_cam = QFrame(self.camera_page)
         self.Result_QF_cam.setObjectName(u"Result_QF_cam")
         self.Result_QF_cam.setStyleSheet(u"")
         self.Result_QF_cam.setFrameShadow(QFrame.Raised)
@@ -1993,7 +2028,7 @@ class Ui_MainWindow(object):
         self.pre_cam = QLabel(self.splitter_cam)
         self.pre_cam.setObjectName(u"pre_cam")
         self.pre_cam.setMinimumSize(QSize(200, 100))
-        self.pre_cam.setStyleSheet(u"background-color: rgb(238, 242, 255);\n"
+        self.pre_cam.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"
 "border:2px solid rgb(255, 255, 255);\n"
 "border-radius:15px")
         self.pre_cam.setAlignment(Qt.AlignCenter)
@@ -2001,7 +2036,7 @@ class Ui_MainWindow(object):
         self.res_cam = QLabel(self.splitter_cam)
         self.res_cam.setObjectName(u"res_cam")
         self.res_cam.setMinimumSize(QSize(200, 100))
-        self.res_cam.setStyleSheet(u"background-color: rgb(238, 242, 255);\n"
+        self.res_cam.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"
 "border:2px solid rgb(255, 255, 255);\n"
 "border-radius:15px")
         self.res_cam.setAlignment(Qt.AlignCenter)
@@ -2012,7 +2047,7 @@ class Ui_MainWindow(object):
 
         self.main_content_cam.addWidget(self.Result_QF_cam)
 
-        self.Pause_QF_cam = QFrame(self.page1)
+        self.Pause_QF_cam = QFrame(self.camera_page)
         self.Pause_QF_cam.setObjectName(u"Pause_QF_cam")
         self.Pause_QF_cam.setMinimumSize(QSize(0, 30))
         self.Pause_QF_cam.setMaximumSize(QSize(16777215, 30))
@@ -2089,7 +2124,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_24.addLayout(self.main_content_cam)
 
-        self.prm_page_cam = QFrame(self.page1)
+        self.prm_page_cam = QFrame(self.camera_page)
         self.prm_page_cam.setObjectName(u"prm_page_cam")
         self.prm_page_cam.setMinimumSize(QSize(0, 0))
         self.prm_page_cam.setMaximumSize(QSize(0, 16777215))
@@ -2684,7 +2719,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_24.addWidget(self.prm_page_cam)
 
-        self.content.addWidget(self.page1)
+        self.content.addWidget(self.camera_page)
 
         self.verticalLayout_6.addWidget(self.content)
 
@@ -2695,7 +2730,7 @@ class Ui_MainWindow(object):
         self.below.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_13 = QHBoxLayout(self.below)
         self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
-        self.horizontalLayout_13.setContentsMargins(20, 2, 0, 4)
+        self.horizontalLayout_13.setContentsMargins(20, 0, 0, 0)
         self.status_bar = QLabel(self.below)
         self.status_bar.setObjectName(u"status_bar")
         self.status_bar.setStyleSheet(u"font: 600 10pt \"Segoe UI\";\n"
@@ -2728,7 +2763,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
 
         self.ToggleBotton.setDefault(False)
-        self.content.setCurrentIndex(2)
+        self.content.setCurrentIndex(1)
         self.ToggleBotton_6.setDefault(False)
         self.ToggleBotton_2.setDefault(False)
         self.ToggleBotton_3.setDefault(False)
@@ -2749,6 +2784,7 @@ class Ui_MainWindow(object):
         self.Title.setText(QCoreApplication.translate("MainWindow", u"Heaven Eye", None))
         self.ToggleBotton.setText(QCoreApplication.translate("MainWindow", u"Hide Panel", None))
         self.src_file_button.setText(QCoreApplication.translate("MainWindow", u"Open File", None))
+        self.src_back_button.setText(QCoreApplication.translate("MainWindow", u"Back Home", None))
         self.settings_button.setText("")
         self.min_sf.setText("")
         self.max_sf.setText("")
@@ -2771,12 +2807,12 @@ class Ui_MainWindow(object):
         self.ToggleBotton_3.setText(QCoreApplication.translate("MainWindow", u"Confidence", None))
         self.ToggleBotton_4.setText(QCoreApplication.translate("MainWindow", u"Delay", None))
         self.ToggleBotton_5.setText(QCoreApplication.translate("MainWindow", u"Save", None))
-        self.save_res_button.setText(QCoreApplication.translate("MainWindow", u"Save MP4 and JPG", None))
-        self.save_txt_button.setText(QCoreApplication.translate("MainWindow", u"Save Labels.txt", None))
-        self.pushButton_classify.setText("")
-        self.pushButton_segment.setText("")
-        self.pushButton_detect.setText("")
-        self.pushButton_pose.setText("")
+        self.save_res_button.setText(QCoreApplication.translate("MainWindow", u"Save Resource", None))
+        self.save_txt_button.setText(QCoreApplication.translate("MainWindow", u"Save Labels", None))
+        self.pushButton_classify.setText(QCoreApplication.translate("MainWindow", u"Classify", None))
+        self.pushButton_segment.setText(QCoreApplication.translate("MainWindow", u"Segment", None))
+        self.pushButton_detect.setText(QCoreApplication.translate("MainWindow", u"Detect", None))
+        self.pushButton_pose.setText(QCoreApplication.translate("MainWindow", u"Pose", None))
         self.label_9.setText(QCoreApplication.translate("MainWindow", u"\u7c7b\u522b\u6570\u91cf", None))
         self.Class_num_cam.setText("")
         self.label_10.setText(QCoreApplication.translate("MainWindow", u"\u76ee\u6807\u6570\u91cf", None))
@@ -2796,7 +2832,7 @@ class Ui_MainWindow(object):
         self.ToggleBotton_7.setText(QCoreApplication.translate("MainWindow", u"\u7f6e\u4fe1\u5ea6\u9608\u503c", None))
         self.ToggleBotton_8.setText(QCoreApplication.translate("MainWindow", u"\u5ef6\u8fdf(ms)", None))
         self.ToggleBotton_11.setText(QCoreApplication.translate("MainWindow", u"Save", None))
-        self.save_res_button_cam.setText(QCoreApplication.translate("MainWindow", u"Save MP4/JPG", None))
-        self.save_txt_button_cam.setText(QCoreApplication.translate("MainWindow", u"Save Labels(.txt)", None))
+        self.save_res_button_cam.setText(QCoreApplication.translate("MainWindow", u"Save Resource", None))
+        self.save_txt_button_cam.setText(QCoreApplication.translate("MainWindow", u"Save Labels", None))
     # retranslateUi
 
