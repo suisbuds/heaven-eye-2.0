@@ -36,7 +36,6 @@ import cv2
 import os
 
 
-
 class YoloPredictor(BasePredictor, QObject):
     # 信号定义，用于与其他部分进行通信
     yolo2main_pre_img = Signal(np.ndarray)  # 原始图像信号
@@ -90,7 +89,7 @@ class YoloPredictor(BasePredictor, QObject):
         self.speed_thres = 0  # 延迟，毫秒
         self.labels_dict = {}  # 返回检测结果的字典
         self.progress_value = 0  # 进度条的值
-        self.task = "" # 任务类型
+        self.task = ""  # 任务类型
 
         # 如果设置已完成，可以使用以下属性
         self.model = None
@@ -217,7 +216,6 @@ class YoloPredictor(BasePredictor, QObject):
                             else:
                                 im = self.preprocess(im0s)
 
-
                         # Inference
                         with profilers[1]:
                             preds = self.inference(im, *args, **kwargs)
@@ -335,7 +333,9 @@ class YoloPredictor(BasePredictor, QObject):
         """Converts input image to model-compatible data type."""
         if not isinstance(img, torch.Tensor):
             # 图形转换
-            self.transforms = getattr(self.model.model, "transforms", classify_transforms(self.imgsz[0]))
+            self.transforms = getattr(
+                self.model.model, "transforms", classify_transforms(self.imgsz[0])
+            )
             img = torch.stack([self.transforms(im) for im in img], dim=0)
         img = (img if isinstance(img, torch.Tensor) else torch.from_numpy(img)).to(
             self.model.device
@@ -620,9 +620,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # self.src_cam_button.setEnabled(False)
         self.src_rtsp_button.setEnabled(False)
         self.src_file_button.setEnabled(True)
-        self.src_back_button.clicked.connect(
-            lambda: UIFuncitons.back_to_home(self)
-        )
+        self.src_back_button.clicked.connect(lambda: UIFuncitons.back_to_home(self))
         self.settings_button.clicked.connect(
             lambda: UIFuncitons.settingBox(self, False)
         )  # 右上方设置按钮

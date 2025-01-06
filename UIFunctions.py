@@ -47,7 +47,7 @@ class UIFuncitons(MainWindow):
                 widthExtended = standard  # 收缩后的宽度
 
             # 设定左侧菜单的动画
-            self.left_box = QPropertyAnimation(self.LeftMenuBg, b"minimumWidth")
+            self.left_box = QPropertyAnimation(self.LeftMenuBg, b"maximumWidth")
             self.left_box.setDuration(500)  # 动画时间（毫秒）
             self.left_box.setStartValue(widthLeftBox)  # 动画的起始宽度
             self.left_box.setEndValue(68)  # 动画的结束宽度（收缩的宽度）
@@ -82,7 +82,7 @@ class UIFuncitons(MainWindow):
                 widthExtended = standard  # 收缩后的宽度
 
             # 设定左侧菜单的动画
-            self.left_box = QPropertyAnimation(self.LeftMenuBg, b"minimumWidth")
+            self.left_box = QPropertyAnimation(self.LeftMenuBg, b"maximumWidth")
             self.left_box.setDuration(500)  # 动画时间（毫秒）
             self.left_box.setStartValue(widthLeftBox)  # 动画的起始宽度
             self.left_box.setEndValue(68)  # 动画的结束宽度（收缩的宽度）
@@ -182,8 +182,7 @@ class UIFuncitons(MainWindow):
             self.PageIndex = 1
             self.content.setCurrentIndex(self.PageIndex)
             self.show_status("Please select a mode")
-            self.stop() 
-            self.yolo_predict.source=""
-            self.task=""
-            self.yolo_predict.task=self.task
-            
+            self.stop()
+            self.yolo_predict.source = ""
+            self.task = ""
+            self.yolo_predict.task = self.task
