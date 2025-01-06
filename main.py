@@ -176,7 +176,7 @@ class YoloPredictor(BasePredictor, QObject):
 
                     # 在中途更改模型
                     if self.used_model_name != self.new_model_name:
-                        # self.yolo2main_status_msg.emit('Change Model...')
+                        self.yolo2main_status_msg.emit("Change Model")
                         self.setup_model(self.new_model_name)
                         self.used_model_name = self.new_model_name
 
