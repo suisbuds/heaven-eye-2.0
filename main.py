@@ -67,7 +67,6 @@ class YoloPredictor(BasePredictor, QObject):
         self.save_dir = increment_path(
             Path(project) / name, exist_ok=self.args.exist_ok
         )
-        print(f"Save directory: {self.save_dir}")
         # 初始化一个标志，标记模型是否已经完成预热（warmup）
         self.done_warmup = False
         # 检查是否要显示图像
@@ -89,7 +88,7 @@ class YoloPredictor(BasePredictor, QObject):
         self.speed_thres = 0  # 延迟，毫秒
         self.labels_dict = {}  # 返回检测结果的字典
         self.progress_value = 0  # 进度条的值
-        self.task = ""
+        self.task = "" # 任务类型
 
         # 如果设置已完成，可以使用以下属性
         self.model = None
@@ -616,7 +615,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # self.pushButton_track.setEnabled(False)
 
         # self.src_cam_button.setEnabled(False)
-        # self.src_rtsp_button.setEnabled(False)
+        self.src_rtsp_button.setEnabled(False)
         self.src_file_button.setEnabled(True)
         self.src_back_button.clicked.connect(
             lambda: UIFuncitons.back_to_home(self)
@@ -692,9 +691,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # 选择检测来源
         self.src_file_button.clicked.connect(self.open_src_file)  # 选择本地文件
-        # self.src_rtsp_button.clicked.connect(
-        #     self.show_status("The function has not yet been implemented.")
-        # )  # 选择 RTSP
+        self.src_rtsp_button.clicked.connect(
+            self.show_status("The function has not yet been implemented.")
+        )  # 选择 RTSP
 
         # 开始测试按钮
         self.run_button.clicked.connect(self.run_or_continue)  # 暂停/开始
@@ -802,7 +801,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.content.setCurrentIndex(self.PageIndex)
         self.src_file_button.setEnabled(True)
         # self.src_cam_button.setEnabled(True)
-        # self.src_rtsp_button.setEnabled(True)
+        self.src_rtsp_button.setEnabled(True)
         self.settings_button.clicked.connect(
             lambda: UIFuncitons.settingBox(self, True)
         )  # 右上方设置按钮
@@ -852,7 +851,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.content.setCurrentIndex(self.PageIndex)
         self.src_file_button.setEnabled(True)
         # self.src_cam_button.setEnabled(True)
-        # self.src_rtsp_button.setEnabled(True)
+        self.src_rtsp_button.setEnabled(True)
         self.settings_button.clicked.connect(
             lambda: UIFuncitons.settingBox(self, True)
         )  # 右上方设置按钮
@@ -901,7 +900,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.content.setCurrentIndex(self.PageIndex)
         self.src_file_button.setEnabled(True)
         # self.src_cam_button.setEnabled(True)
-        # self.src_rtsp_button.setEnabled(True)
+        self.src_rtsp_button.setEnabled(True)
         self.settings_button.clicked.connect(
             lambda: UIFuncitons.settingBox(self, True)
         )  # 右上方设置按钮
@@ -950,7 +949,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.content.setCurrentIndex(self.PageIndex)
         self.src_file_button.setEnabled(True)
         # self.src_cam_button.setEnabled(False)
-        # self.src_rtsp_button.setEnabled(True)
+        self.src_rtsp_button.setEnabled(True)
         self.settings_button.clicked.connect(
             lambda: UIFuncitons.settingBox(self, True)
         )  # 右上方设置按钮
@@ -999,7 +998,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.content.setCurrentIndex(self.PageIndex)
         self.src_file_button.setEnabled(True)
         # self.src_cam_button.setEnabled(True)
-        # self.src_rtsp_button.setEnabled(True)
+        self.src_rtsp_button.setEnabled(True)
         self.settings_button.clicked.connect(
             lambda: UIFuncitons.settingBox(self, True)
         )  # 右上方设置按钮

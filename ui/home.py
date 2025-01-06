@@ -211,6 +211,30 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_5.addWidget(self.src_back_button)
 
+        self.src_rtsp_button = QPushButton(self.MenuBox)
+        self.src_rtsp_button.setObjectName(u"src_rtsp_button")
+        self.src_rtsp_button.setMinimumSize(QSize(0, 45))
+        self.src_rtsp_button.setCursor(QCursor(Qt.PointingHandCursor))
+        self.src_rtsp_button.setAutoFillBackground(False)
+        self.src_rtsp_button.setStyleSheet(u"QPushButton{\n"
+"background-image: url(:/all/img/RTSP.png);\n"
+"background-repeat: no-repeat;\n"
+"background-position: left center;\n"
+"border: none;\n"
+"border-left: 23px solid transparent;\n"
+"\n"
+"text-align: center;\n"
+"padding-left: 0px;\n"
+"color: rgb(255, 255, 255);\n"
+"font: 700 12pt \"Segoe UI\";\n"
+"}\n"
+"\n"
+"QPushButton:hover{\n"
+"background-color: rgba(210, 180, 222, 0.25);\n"
+"}")
+
+        self.verticalLayout_5.addWidget(self.src_rtsp_button)
+
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.verticalLayout_5.addItem(self.verticalSpacer)
@@ -2785,6 +2809,7 @@ class Ui_MainWindow(object):
         self.ToggleBotton.setText(QCoreApplication.translate("MainWindow", u"Hide Panel", None))
         self.src_file_button.setText(QCoreApplication.translate("MainWindow", u"Open File", None))
         self.src_back_button.setText(QCoreApplication.translate("MainWindow", u"Back Home", None))
+        self.src_rtsp_button.setText(QCoreApplication.translate("MainWindow", u"RTSP", None))
         self.settings_button.setText("")
         self.min_sf.setText("")
         self.max_sf.setText("")

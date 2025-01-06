@@ -175,11 +175,13 @@ class UIFuncitons(MainWindow):
         shadow.setBlurRadius(38)  # 设定阴影的模糊半径
         shadow.setColor(Color)  # 设定阴影的颜色
         widget.setGraphicsEffect(shadow)  # 将阴影效果应用到指定的小部件
-    
+
     # 回退
     def back_to_home(self):
         if self.PageIndex == 0:
             self.PageIndex = 1
             self.content.setCurrentIndex(self.PageIndex)
             self.show_status("Please select a mode")
-
+            self.yolo_predict.source=""
+            self.yolo_predict.stop_dtc = True
+            
