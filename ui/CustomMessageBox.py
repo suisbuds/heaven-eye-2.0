@@ -5,7 +5,7 @@ from PySide6.QtGui import QPixmap, QIcon
 
 # Single-button dialog box, which disappears automatically after appearing for a specified period of time
 class MessageBox(QMessageBox):
-    def __init__(self, *args, title="提示", count=1, time=1000, auto=False, **kwargs):
+    def __init__(self, *args, title="Note", count=1, time=1000, auto=False, **kwargs):
         super(MessageBox, self).__init__(*args, **kwargs)
         self._count = count
         self._time = time
@@ -15,10 +15,10 @@ class MessageBox(QMessageBox):
         self.setStyleSheet(
             """
                             QWidget{color:black;
-                                    background-color: qlineargradient(x0:0, y0:1, x1:1, y1:1,stop:0.4  rgb(107, 128, 210),stop:1 rgb(180, 140, 255));
-                                    font: 13pt "Microsoft YaHei UI";
-                                    padding-right: 5px;
-                                    padding-top: 14px;
+                                    background-color: rgb(255, 182, 185);
+                                    font: 12pt "Segoe UI";
+                                    padding-right: 18px;
+                                    padding-top: 12px;
                                     font-weight: light;}
                             QLabel{
                                 color:white;

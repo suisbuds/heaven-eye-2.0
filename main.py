@@ -24,7 +24,6 @@ from pathlib import Path
 from utils.capnums import Camera
 from utils.rtsp_win import Window
 
-from PIL import Image
 import numpy as np
 import threading
 import traceback
@@ -618,7 +617,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # self.pushButton_track.setEnabled(False)
 
         # self.src_cam_button.setEnabled(False)
-        self.src_rtsp_button.setEnabled(False)
+        # self.src_rtsp_button.setEnabled(True)
         self.src_file_button.setEnabled(True)
         self.src_back_button.clicked.connect(lambda: UIFuncitons.back_to_home(self))
         self.settings_button.clicked.connect(
@@ -692,9 +691,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # 选择检测来源
         self.src_file_button.clicked.connect(self.open_src_file)  # 选择本地文件
-        self.src_rtsp_button.clicked.connect(
-            self.show_status("The function has not yet been implemented.")
-        )  # 选择 RTSP
+        # self.src_rtsp_button.clicked.connect(
+        #     self.show_status("The function has not yet been implemented.")
+        # )  # 选择 RTSP
 
         # 开始测试按钮
         self.run_button.clicked.connect(self.run_or_continue)  # 暂停/开始
@@ -802,7 +801,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.content.setCurrentIndex(self.PageIndex)
         self.src_file_button.setEnabled(True)
         # self.src_cam_button.setEnabled(True)
-        self.src_rtsp_button.setEnabled(True)
+        # self.src_rtsp_button.setEnabled(True)
         self.settings_button.clicked.connect(
             lambda: UIFuncitons.settingBox(self, True)
         )  # 右上方设置按钮
@@ -852,7 +851,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.content.setCurrentIndex(self.PageIndex)
         self.src_file_button.setEnabled(True)
         # self.src_cam_button.setEnabled(True)
-        self.src_rtsp_button.setEnabled(True)
+        # self.src_rtsp_button.setEnabled(True)
         self.settings_button.clicked.connect(
             lambda: UIFuncitons.settingBox(self, True)
         )  # 右上方设置按钮
@@ -901,7 +900,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.content.setCurrentIndex(self.PageIndex)
         self.src_file_button.setEnabled(True)
         # self.src_cam_button.setEnabled(True)
-        self.src_rtsp_button.setEnabled(True)
+        # self.src_rtsp_button.setEnabled(True)
         self.settings_button.clicked.connect(
             lambda: UIFuncitons.settingBox(self, True)
         )  # 右上方设置按钮
@@ -950,7 +949,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.content.setCurrentIndex(self.PageIndex)
         self.src_file_button.setEnabled(True)
         # self.src_cam_button.setEnabled(False)
-        self.src_rtsp_button.setEnabled(True)
+        # self.src_rtsp_button.setEnabled(True)
         self.settings_button.clicked.connect(
             lambda: UIFuncitons.settingBox(self, True)
         )  # 右上方设置按钮
@@ -999,7 +998,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.content.setCurrentIndex(self.PageIndex)
         self.src_file_button.setEnabled(True)
         # self.src_cam_button.setEnabled(True)
-        self.src_rtsp_button.setEnabled(True)
+        # self.src_rtsp_button.setEnabled(True)
         self.settings_button.clicked.connect(
             lambda: UIFuncitons.settingBox(self, True)
         )  # 右上方设置按钮
@@ -1813,7 +1812,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             MessageBox(
                 self.close_button,
                 title="Note",
-                text="Exiting",
+                text="Exit",
                 time=3000,
                 auto=True,
             ).exec()

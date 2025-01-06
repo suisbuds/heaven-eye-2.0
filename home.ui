@@ -445,7 +445,7 @@ background-color: rgb(97, 192, 191);
                </property>
               </widget>
              </item>
-             <item>
+             <!-- <item>
               <widget class="QPushButton" name="src_rtsp_button">
                <property name="minimumSize">
                 <size>
@@ -481,7 +481,7 @@ background-color: rgba(210, 180, 222, 0.25);
                 <string>RTSP</string>
                </property>
               </widget>
-             </item>
+             </item> -->
              <item>
               <spacer name="verticalSpacer">
                <property name="orientation">
