@@ -182,6 +182,8 @@ class UIFuncitons(MainWindow):
             self.PageIndex = 1
             self.content.setCurrentIndex(self.PageIndex)
             self.show_status("Please select a mode")
+            self.stop() 
             self.yolo_predict.source=""
-            self.yolo_predict.stop_dtc = True
+            self.task=""
+            self.yolo_predict.task=self.task
             

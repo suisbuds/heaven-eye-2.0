@@ -24,6 +24,7 @@ from pathlib import Path
 from utils.capnums import Camera
 from utils.rtsp_win import Window
 
+from PIL import Image
 import numpy as np
 import threading
 import traceback
@@ -33,6 +34,7 @@ import torch
 import sys
 import cv2
 import os
+
 
 
 class YoloPredictor(BasePredictor, QObject):
@@ -214,8 +216,7 @@ class YoloPredictor(BasePredictor, QObject):
                                 im = self.classify_preprocess(im0s)
                             else:
                                 im = self.preprocess(im0s)
-                            # elif self.task == 'Detect' or self.task == 'Pose' or self.task == 'Segment':
-                            #     im = self.preprocess(im0s)
+
 
                         # Inference
                         with profilers[1]:
@@ -333,6 +334,8 @@ class YoloPredictor(BasePredictor, QObject):
     def classify_preprocess(self, img):
         """Converts input image to model-compatible data type."""
         if not isinstance(img, torch.Tensor):
+            # 图形转换
+            self.transforms = getattr(self.model.model, "transforms", classify_transforms(self.imgsz[0]))
             img = torch.stack([self.transforms(im) for im in img], dim=0)
         img = (img if isinstance(img, torch.Tensor) else torch.from_numpy(img)).to(
             self.model.device
@@ -1038,6 +1041,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     ####################################image or video####################################
     # 选择本地档案
     def open_src_file(self):
+        # 停止检测
+        self.stop()
         if self.task == "Classify":
             self.show_status("Mode: Classify")
         if self.task == "Detect":
@@ -1105,8 +1110,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 with open(config_file, "w", encoding="utf-8") as f:
                     f.write(config_json)
 
-                # 停止检测
-                self.stop()
+                # # 停止检测
+                # self.stop()
 
     # 主视窗显示原始图片和检测结果
     @staticmethod

@@ -1,6 +1,6 @@
 {
-  "iou": 0.45,
-  "conf": 0.25,
+  "iou": 0.41,
+  "conf": 0.48,
   "rate": 0,
   "save_res": 0,
   "save_txt": 0,
