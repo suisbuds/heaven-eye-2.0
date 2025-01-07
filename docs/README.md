@@ -1,5 +1,7 @@
 # Heaven Eye
 
+![](/assets/test.gif)
+
 ## Backgrounds
 
 Heaven Eye 项目旨在解决现代城市管理中人流和车流检测的复杂需求
