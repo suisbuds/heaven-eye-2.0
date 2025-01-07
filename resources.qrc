@@ -22,5 +22,6 @@
         <file>img/pose.png</file>
         <file>img/segment.png</file>
         <file>img/logo.png</file>
+        <file>img/track.png</file>
     </qresource>
 </RCC>

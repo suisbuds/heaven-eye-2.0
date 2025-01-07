@@ -118,11 +118,19 @@ class YoloPredictor(BasePredictor, QObject):
             # set model
             self.yolo2main_status_msg.emit("Loding Model")
             # if not self.model:
+            # 追踪
+            if self.task == "Track":
+                self.track_model = YOLO(self.new_model_name)  
             self.setup_model(self.new_model_name)
             self.used_model_name = self.new_model_name
 
             with self._lock:  # for thread-safe inference
                 # Setup source every time predict is called
+                # 追踪
+                if self.task == "Track":
+                    track_history = defaultdict(lambda: [])
+                else:
+                    track_history = None
                 self.setup_source(
                     self.source if self.source is not None else self.args.source
                 )
@@ -177,6 +185,9 @@ class YoloPredictor(BasePredictor, QObject):
                     # 在中途更改模型
                     if self.used_model_name != self.new_model_name:
                         self.yolo2main_status_msg.emit("Change Model")
+                        # 追踪
+                        if self.task == "Track":
+                            self.track_model = YOLO(self.new_model_name)  
                         self.setup_model(self.new_model_name)
                         self.used_model_name = self.new_model_name
 
@@ -234,14 +245,11 @@ class YoloPredictor(BasePredictor, QObject):
                                 self.results = self.pose_postprocess(preds, im, im0s)
                             elif self.task == "Segment":
                                 self.results = self.segment_postprocess(preds, im, im0s)
-
+                            # 追踪
                             elif self.task == "Track":
-                                model = YOLO(self.used_model_name)
-                                self.results = model.track(
-                                    source=self.source, tracker="bytetrack.yaml"
+                                self.results, self.track_pointlist = self.track_postprocess(
+                                    self.track_model, track_history, preds, im, im0s
                                 )
-                                print(self.results)
-                                # pass
                         self.run_callbacks("on_predict_postprocess_end")
                         # Visualize, save, write results
                         n = len(im0s)
@@ -270,6 +278,16 @@ class YoloPredictor(BasePredictor, QObject):
                                 pass
                             else:
                                 im0 = self.plotted_img
+                                # 追踪
+                                if self.task == "Track":
+                                    for points in self.track_pointlist:
+                                        cv2.polylines(
+                                            im0,
+                                            [points],
+                                            isClosed=False,
+                                            color=(203, 224, 252),
+                                            thickness=4,
+                                        )
                                 for ii in label_str.split(",")[:-1]:
                                     nums, label_name = ii.split("~")
                                     if ":" in nums:
@@ -491,6 +509,60 @@ class YoloPredictor(BasePredictor, QObject):
                 )
             )
         return results
+    
+    def track_postprocess(self, model, track_history, preds, img, orig_imgs):
+        # Set the track model for track line
+        track_result = model.track(orig_imgs, persist=True)
+
+        # Set the track preds
+        preds = ops.non_max_suppression(
+            preds,
+            self.conf_thres,
+            self.iou_thres,
+            agnostic=self.args.agnostic_nms,
+            max_det=self.args.max_det,
+            classes=self.args.classes,
+            nc=len(self.model.names),
+        )
+
+        if not isinstance(
+            orig_imgs, list
+        ):  # input images are a torch.Tensor, not a list
+            orig_imgs = ops.convert_torch2numpy_batch(orig_imgs)
+
+        results = []
+
+        for i, pred in enumerate(preds):
+            orig_img = orig_imgs[i]
+            img_path = self.batch[0][i]
+            # Store result
+            results.append(
+                Results(
+                    orig_img,
+                    path=img_path,
+                    names=self.model.names,
+                    boxes=track_result[0].boxes.data,
+                )
+            )
+
+            # Get the boxes and track IDs
+            boxes = track_result[0].boxes.xywh.cpu()
+            if results[0].boxes.id is not None:
+                track_ids = track_result[0].boxes.id.int().cpu().tolist()
+            output = []
+            # Plot the tracks
+            if results[0].boxes.id is not None:
+                for box, track_id in zip(boxes, track_ids):
+                    x, y, w, h = box
+                    track = track_history[track_id]
+                    track.append((float(x), float(y)))  # x, y center point
+                    if len(track) > 30:  # retain 90 tracks for 90 frames
+                        track.pop(0)
+
+                    # Get the points
+                    points = np.hstack(track).astype(np.int32).reshape((-1, 1, 2))
+                    output.append(points)
+        return results, output
 
     def pre_transform(self, img):
         same_shapes = all(x.shape == img[0].shape for x in img)
@@ -614,7 +686,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pushButton_pose.clicked.connect(self.button_pose)
         self.pushButton_classify.clicked.connect(self.button_classify)
         self.pushButton_segment.clicked.connect(self.button_segment)
-        # self.pushButton_track.setEnabled(False)
+        self.pushButton_track.clicked.connect(self.button_track)
 
         # self.src_cam_button.setEnabled(False)
         # self.src_rtsp_button.setEnabled(True)

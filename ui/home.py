@@ -1527,6 +1527,30 @@ class Ui_MainWindow(object):
 
         self.gridLayout_3.addWidget(self.pushButton_segment, 1, 4, 1, 1)
 
+        self.pushButton_track = QToolButton(self.home_page)
+        self.pushButton_track.setObjectName(u"pushButton_track")
+        sizePolicy.setHeightForWidth(self.pushButton_track.sizePolicy().hasHeightForWidth())
+        self.pushButton_track.setSizePolicy(sizePolicy)
+        self.pushButton_track.setMinimumSize(QSize(200, 200))
+        self.pushButton_track.setMaximumSize(QSize(16777215, 16777215))
+        self.pushButton_track.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
+        self.pushButton_track.setStyleSheet(u"\n"
+"                                QToolButton {\n"
+"                                    qproperty-icon: url(:/all/img/track.png);\n"
+"                                    background-repeat: no-repeat;\n"
+"                                    background-position: center;\n"
+"                                    border: none;\n"
+"                                    padding-top: 120px;\n"
+"                                }\n"
+"                                QToolButton:hover {\n"
+"                                    background-color: rgba(210, 180, 222, 0.25);\n"
+"                                }\n"
+"                            ")
+        self.pushButton_track.setFont(font7)
+        self.pushButton_track.setIconSize(QSize(400, 400))
+
+        self.gridLayout_3.addWidget(self.pushButton_track, 1, 5, 1, 1)
+
         self.pushButton_detect = QToolButton(self.home_page)
         self.pushButton_detect.setObjectName(u"pushButton_detect")
         self.pushButton_detect.setEnabled(True)
@@ -1550,7 +1574,7 @@ class Ui_MainWindow(object):
         self.pushButton_detect.setFont(font7)
         self.pushButton_detect.setIconSize(QSize(400, 400))
 
-        self.gridLayout_3.addWidget(self.pushButton_detect, 1, 2, 1, 1)
+        self.gridLayout_3.addWidget(self.pushButton_detect, 1, 3, 1, 1)
 
         self.pushButton_pose = QToolButton(self.home_page)
         self.pushButton_pose.setObjectName(u"pushButton_pose")
@@ -1574,7 +1598,7 @@ class Ui_MainWindow(object):
         self.pushButton_pose.setFont(font7)
         self.pushButton_pose.setIconSize(QSize(400, 400))
 
-        self.gridLayout_3.addWidget(self.pushButton_pose, 1, 3, 1, 1)
+        self.gridLayout_3.addWidget(self.pushButton_pose, 1, 2, 1, 1)
 
 
         self.gridLayout.addLayout(self.gridLayout_3, 1, 0, 1, 1)
@@ -2811,6 +2835,7 @@ class Ui_MainWindow(object):
         self.save_txt_button.setText(QCoreApplication.translate("MainWindow", u"Save Labels", None))
         self.pushButton_classify.setText(QCoreApplication.translate("MainWindow", u"Classify", None))
         self.pushButton_segment.setText(QCoreApplication.translate("MainWindow", u"Segment", None))
+        self.pushButton_track.setText(QCoreApplication.translate("MainWindow", u"Track", None))
         self.pushButton_detect.setText(QCoreApplication.translate("MainWindow", u"Detect", None))
         self.pushButton_pose.setText(QCoreApplication.translate("MainWindow", u"Pose", None))
         self.label_9.setText(QCoreApplication.translate("MainWindow", u"\u7c7b\u522b\u6570\u91cf", None))
