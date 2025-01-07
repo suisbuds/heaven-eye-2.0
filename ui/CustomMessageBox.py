@@ -17,7 +17,7 @@ class MessageBox(QMessageBox):
                             QWidget{color:black;
                                     background-color: rgb(255, 182, 185);
                                     font: 12pt "Segoe UI";
-                                    padding-right: 18px;
+                                    padding-right: 20px;
                                     padding-top: 12px;
                                     font-weight: light;}
                             QLabel{
