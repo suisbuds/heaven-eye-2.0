@@ -2,7 +2,6 @@
 
 ![](/assets/test.gif)
 
----
 
 ## Reference
 
