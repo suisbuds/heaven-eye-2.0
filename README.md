@@ -2,6 +2,14 @@
 
 ![](/assets/test.gif)
 
+## Features
+
+- [x] Object Detection
+- [x] Instance Segmentation
+- [x] Image Classification
+- [x] Pose Estimation
+- [x] Object Tracking
+
 ## Requirements
 
 - `python >= 3.9`
@@ -15,3 +23,4 @@
 - [Ultralytics-PySide6](https://github.com/WangQvQ/Ultralytics-PySide6)
 - [ultralytics](https://github.com/ultralytics/ultralytics)
 - [これは迷子です](https://www.pixiv.net/artworks/111850710) (author: 島風はく, id: 111850710)
+- [激おこ そよちゃん](https://www.pixiv.net/artworks/111124804) (author: トッドメイド, id: 111124804)

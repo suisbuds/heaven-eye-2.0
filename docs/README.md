@@ -4,7 +4,7 @@
 
 ## Backgrounds
 
-Heaven Eye 项目旨在解决 HUST 交通管理中人流和车流检测的复杂需求. 为提升 HUST 交通管理效率, 我们开发了基于 PySide6 和 Qt 框架的桌面应用程序 Heaven Eye, 并集成分类, 检测, 追踪, 分割和姿态预估模型, 从而能提供多角度的流量分析和可靠的数据支持
+**Heaven Eye** 项目旨在解决 HUST 交通管理中人流和车流检测的复杂需求. 为提升 HUST 交通管理效率, 我们开发了基于 PySide6 和 Qt 框架的桌面应用程序 **Heaven Eye**, 并集成分类, 检测, 追踪, 分割和姿态预估模型, 从而提供多角度的流量分析和可靠的数据支持
 
 ## Project Structure
 
@@ -87,7 +87,7 @@ Heaven Eye 项目旨在解决 HUST 交通管理中人流和车流检测的复杂
 - 交互
   - navgation panel 和 settings panel 动画
   - 检测分割线动画
-  - 仿 mac 窗口按钮, 窗口缩放动画
+  - 仿 Mac 窗口按钮, 窗口缩放动画
 
 - 风格
   - 基于 Material You Guidelines 设计
@@ -151,7 +151,7 @@ Heaven Eye 项目旨在解决 HUST 交通管理中人流和车流检测的复杂
   -  `setup_source` 建立数据集迭代器, 持续读取数据集中的图片或视频帧
 - Preprocess  
   - 分类: 调用 `classify_preprocess` 将图像转换为分类模型兼容的格式  
-  - 检测, 分割, 姿态: 调用 `preprocess` 进行图像尺寸变换、类型转换
+  - 检测, 分割, 姿态, 追踪: 调用 `preprocess` 进行图像尺寸变换、类型转换
 - Inference
   - 接收输入图像执行模型推理, 得到 `preds` 存储原始预测结果
 - Postprocess
