@@ -117,9 +117,9 @@ class YoloPredictor(BasePredictor, QObject):
 
             # set model
             self.yolo2main_status_msg.emit("Loding Model")
-            if not self.model:
-                self.setup_model(self.new_model_name)
-                self.used_model_name = self.new_model_name
+            # if not self.model:
+            self.setup_model(self.new_model_name)
+            self.used_model_name = self.new_model_name
 
             with self._lock:  # for thread-safe inference
                 # Setup source every time predict is called
