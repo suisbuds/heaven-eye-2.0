@@ -4,8 +4,7 @@
 
 ## Backgrounds
 
-Heaven Eye 项目旨在解决现代城市管理中人流和车流检测的复杂需求
-为提升交通管理效率, 我们开发了基于 PySide6 和 Qt 框架的桌面应用程序 Heaven Eye, 并集成了分类, 检测, 姿态预估和分割模型, 以提供可靠的交通流量数据支持
+Heaven Eye 项目旨在解决 HUST 交通管理中人流和车流检测的复杂需求. 为提升 HUST 交通管理效率, 我们开发了基于 PySide6 和 Qt 框架的桌面应用程序 Heaven Eye, 并集成分类, 检测, 追踪, 分割和姿态预估模型, 从而能提供多角度的流量分析和可靠的数据支持
 
 ## Project Structure
 
@@ -29,7 +28,8 @@ Heaven Eye 项目旨在解决现代城市管理中人流和车流检测的复杂
 │   ├── classify
 │   ├── detect
 │   ├── pose
-│   └── segment
+│   ├── segment
+│   └── track
 ├── runs
 ├── ui
 └── utils
@@ -40,6 +40,7 @@ Heaven Eye 项目旨在解决现代城市管理中人流和车流检测的复杂
 - [x] 姿势识别
 - [x] 实例分割
 - [x] 分类任务
+- [x] 目标追踪 
 - [x] 图像推理
 - [x] 视频推理
 - [x] 模型选择
@@ -47,7 +48,7 @@ Heaven Eye 项目旨在解决现代城市管理中人流和车流检测的复杂
 - [x] 重叠度阈值调节
 - [x] 延迟时间调节
 - [x] 推理结果保存
-- [x] Docker 打包镜像 
+- [x] Docker 镜像打包 
 
 ## UI 
 
@@ -159,7 +160,8 @@ Heaven Eye 项目旨在解决现代城市管理中人流和车流检测的复杂
     - `postprocess`  
     - `classify_postprocess`  
     - `segment_postprocess`  
-    - `pose_postprocess`  
+    - `pose_postprocess` 
+    - `track_postprocess`
 - 结果输出
   - `write_results` 将 `Results` 绘制到图像上, 并利用信号发送到 `MainWindow`  实时展示结果和统计信息
   - 更新进度条和帧率信息
